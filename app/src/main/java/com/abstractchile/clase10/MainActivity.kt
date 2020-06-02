@@ -1,17 +1,13 @@
 package com.abstractchile.clase10
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityCompat.startActivityForResult
 import com.abstractchile.clase10.configuration.API_KEY
 import com.abstractchile.clase10.networking.CatApi
 import com.abstractchile.clase10.networking.CatService
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.OAuthProvider
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_main.*
