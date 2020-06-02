@@ -8,6 +8,23 @@
     android:orientation="vertical"
 
     tools:context=".MainActivity">
+    <TextView
+        android:id="@+id/nameTextView"
+        android:background="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:textAlignment="center"
+        android:textSize="15dp"/>
+    <TextView
+        android:id="@+id/emailTextView"
+        android:background="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="email"
+        android:textAlignment="center"
+        android:textSize="15dp"
+        android:layout_marginBottom="10dp"/>
     <LinearLayout
         android:id="@+id/searchContainer"
         android:layout_width="match_parent"
@@ -28,6 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
+
     <TextView
         android:layout_marginTop="5dp"
         android:id="@+id/titleTextView"

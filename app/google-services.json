@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1000391496639",
+    "firebase_url": "https://igneous-day-243208.firebaseio.com",
+    "project_id": "igneous-day-243208",
+    "storage_bucket": "igneous-day-243208.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1000391496639:android:767c1f02755c03b25d470a",
+        "android_client_info": {
+          "package_name": "com.abstractchile.clase10"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1000391496639-5vm58jqp0dcl0m2iraor56f2hg7u96me.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.abstractchile.clase10",
+            "certificate_hash": "ccb0fc1ed0eef9639618df3050b1322d4442ef0a"
+          }
+        },
+        {
+          "client_id": "1000391496639-83aqi5hupvcgtpucnhtmt0ud5g3of6id.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDO__lTryucc0fWmOVtZrvp5T5keoDufTs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1000391496639-83aqi5hupvcgtpucnhtmt0ud5g3of6id.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

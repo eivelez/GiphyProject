@@ -1,26 +1,23 @@
 package com.abstractchile.clase10
 
-import android.opengl.Visibility
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.MainThread
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.startActivityForResult
 import com.abstractchile.clase10.configuration.API_KEY
 import com.abstractchile.clase10.networking.CatApi
 import com.abstractchile.clase10.networking.CatService
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.gson.JsonArray
-import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_gif_list.*
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.http.Body
 
 
 class MainActivity : AppCompatActivity(),
@@ -36,9 +33,10 @@ class MainActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        searchButtonImage.setOnClickListener{
-            searchActionClick()
-        }
+        val name = intent.getStringExtra("NAME")
+        val email = intent.getStringExtra("EMAIL")
+        nameTextView.text = name
+        emailTextView.text = email
         val request = CatService.buildService(CatApi::class.java)
         val call = request.getCategories()
         call.enqueue(object : Callback<JsonObject> {
@@ -69,8 +67,11 @@ class MainActivity : AppCompatActivity(),
                 Toast.makeText(this@MainActivity, "${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
-
+        searchButtonImage.setOnClickListener{
+            searchActionClick()
+        }
     }
+
     fun searchActionClick(){
         var searchWord=inputText.text.toString()
         if (searchWord==""){
@@ -250,6 +251,8 @@ class MainActivity : AppCompatActivity(),
         println(item)
     }
 }
+
+
 // read info
 /**
 val cartAsText = File(context?.filesDir, "cart.txt").bufferedReader().readLines()
