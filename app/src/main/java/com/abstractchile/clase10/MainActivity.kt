@@ -250,5 +250,17 @@ class MainActivity : AppCompatActivity(),
         println(item)
     }
 }
+// read info
+/**
+val cartAsText = File(context?.filesDir, "cart.txt").bufferedReader().readLines()
+cartAsText.forEach{
+itemsOnCart.add(it)
+}
+
+ write
+val file = File(this.filesDir, "cart.txt")
+file.createNewFile()
+file.appendText(item+"\n")
+ */
 
 
