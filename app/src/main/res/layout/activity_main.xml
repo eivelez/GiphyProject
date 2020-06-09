@@ -45,6 +45,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
+    <TextView
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:background="@color/colorAccent"
+        android:layout_height="wrap_content"
+        android:id="@+id/latTextView"/>
+    <TextView
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:background="@color/colorAccent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lonTextView"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:background="@color/colorAccent"
+        android:layout_height="wrap_content"
+        android:text="Click image to save!"/>
+
 
     <TextView
         android:layout_marginTop="5dp"

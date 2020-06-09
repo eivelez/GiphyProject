@@ -1,13 +1,25 @@
 package com.abstractchile.clase10
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
+import android.os.Looper
+import android.provider.Settings
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.abstractchile.clase10.configuration.API_KEY
 import com.abstractchile.clase10.networking.CatApi
 import com.abstractchile.clase10.networking.CatService
-import com.google.firebase.auth.OAuthProvider
+import com.google.android.gms.location.*
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_main.*
@@ -26,9 +38,15 @@ class MainActivity : AppCompatActivity(),
     var listOfCategories:MutableList<String> = ArrayList()
     var listOfSubcategories:MutableList<MutableList<String>> = ArrayList()
     var directSearch = 0
+    var listOfFavorites:MutableList<String> = ArrayList()
+    var listOfDirections:MutableList<String> = ArrayList()
+    val PERMISSION_ID = 42
+    lateinit var mFusedLocationClient: FusedLocationProviderClient
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         val name = intent.getStringExtra("NAME")
         val email = intent.getStringExtra("EMAIL")
         nameTextView.text = name
@@ -67,6 +85,88 @@ class MainActivity : AppCompatActivity(),
             searchActionClick()
         }
     }
+
+    @SuppressLint("MissingPermission")
+    private fun getLastLocation() {
+        requestNewLocationData()
+        if (checkPermissions()) {
+            if (isLocationEnabled()) {
+
+                mFusedLocationClient.lastLocation.addOnCompleteListener(this) { task ->
+                    var location: Location? = task.result
+                    if (location == null) {
+                        requestNewLocationData()
+                    } else {
+                        if (location != null) {
+                            findViewById<TextView>(R.id.latTextView).text = location.latitude.toString()
+                            findViewById<TextView>(R.id.lonTextView).text = location.longitude.toString()
+                        }
+                    }
+                }
+            } else {
+                Toast.makeText(this, "Turn on location", Toast.LENGTH_LONG).show()
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+            }
+        } else {
+            requestPermissions()
+        }
+    }
+
+    private val mLocationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            var mLastLocation: Location = locationResult.lastLocation
+            findViewById<TextView>(R.id.latTextView).text = mLastLocation.latitude.toString()
+            findViewById<TextView>(R.id.lonTextView).text = mLastLocation.longitude.toString()
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun requestNewLocationData() {
+        var mLocationRequest = LocationRequest()
+        mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        mLocationRequest.interval = 0
+        mLocationRequest.fastestInterval = 0
+        mLocationRequest.numUpdates = 1
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        mFusedLocationClient!!.requestLocationUpdates(
+            mLocationRequest, mLocationCallback,
+            Looper.myLooper()
+        )
+    }
+
+    private fun checkPermissions(): Boolean {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            return true
+        }
+        return false
+    }
+
+    private fun requestPermissions() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION),
+            PERMISSION_ID
+        )
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        if (requestCode == PERMISSION_ID) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                // Granted. Start getting the location information
+            }
+        }
+    }
+
+    private fun isLocationEnabled(): Boolean {
+        var locationManager: LocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER
+        )
+    }
+
 
     fun searchActionClick(){
         var searchWord=inputText.text.toString()
@@ -245,6 +345,7 @@ class MainActivity : AppCompatActivity(),
 
     override fun onListFragmentInteraction3(item: String) {
         println(item)
+        getLastLocation()
     }
 }
 
